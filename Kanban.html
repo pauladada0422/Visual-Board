@@ -1,0 +1,907 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Kanban Board</title>
+    <meta charset="utf-8" />
+    <script src="scripts/angular-1.6.4.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Large &amp; Small" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="assets/css/fonts.googleapis.com.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="assets/js/ace-extra.min.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="assets/js/html5shiv.min.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="assets/css/MyStyle.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div ng-app="Kanban">
+        <div ng-controller="MyCtrl">
+            
+
+                <!--Navbar Head BEGIN-->
+                <div class="navbar navbar-inverse ace-save-state" id="navbar">
+                    <div class="navbar-container ace-save-state" id="navbar-container">
+                        <!--<button class="navbar-toggle menu-toggler pull-left" id="menu-toggler" type="button" data-target="#sidebar">
+                    <span class="sr-only">Toggle sidebar</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>-->
+                        <div class="navbar-header pull-left">
+                            <div class="navbar-brand">
+                                <small>
+                                    <!--<i class="fa fa-leaf"></i>-->
+                                    <img style="width:40px;height:40px;" src="IMG/asmmove2.gif" />
+                                    ASM Pacific Technology Ltd.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!--<div class="navbar-buttons navbar-header pull-right" role="navigation">
+                    <ul class="nav ace-nav">
+                        <li class="grey dropdown-modal">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                <i class="ace-icon fa fa-tasks"></i>
+                                <span class="badge badge-grey">4</span>
+                            </a>
+                            <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                                <li class="dropdown-header">
+                                    <i class="ace-icon fa fa-check"></i>
+                                    4 Tasks to complete
+                                </li>
+                                <li class="dropdown-content ace-scroll" style="position: relative;">
+                                    <div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="max-height: 200px;">
+                                        <ul class="dropdown-menu dropdown-navbar">
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">Software Update</span>
+                                                        <span class="pull-right">65%</span>
+                                                    </div>
+                                                    <div class="progress progress-mini">
+                                                        <div class="progress-bar" style="width: 65%;"></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">Hardware Upgrade</span>
+                                                        <span class="pull-right">35%</span>
+                                                    </div>
+                                                    <div class="progress progress-mini">
+                                                        <div class="progress-bar progress-bar-danger" style="width: 35%;"></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">Unit Testing</span>
+                                                        <span class="pull-right">15%</span>
+                                                    </div>
+                                                    <div class="progress progress-mini">
+                                                        <div class="progress-bar progress-bar-warning" style="width: 15%;"></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">Bug Fixes</span>
+                                                        <span class="pull-right">90%</span>
+                                                    </div>
+                                                    <div class="progress progress-mini progress-striped active">
+                                                        <div class="progress-bar progress-bar-success" style="width: 90%;"></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="dropdown-footer">
+                                    <a href="#">
+                                        See tasks with details
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="purple dropdown-modal">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                <i class="ace-icon fa fa-bell icon-animated-bell"></i>
+                                <span class="badge badge-important">8</span>
+                            </a>
+                            <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                                <li class="dropdown-header">
+                                    <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                    8 Notifications
+                                </li>
+                                <li class="dropdown-content ace-scroll" style="position: relative;">
+                                    <div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="max-height: 200px;">
+                                        <ul class="dropdown-menu dropdown-navbar navbar-pink">
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">
+                                                            <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
+                                                            New Comments
+                                                        </span>
+                                                        <span class="pull-right badge badge-info">+12</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="btn btn-xs btn-primary fa fa-user"></i>
+                                                    Bob just signed up as an editor ...
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">
+                                                            <i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
+                                                            New Orders
+                                                        </span>
+                                                        <span class="pull-right badge badge-success">+8</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="clearfix">
+                                                        <span class="pull-left">
+                                                            <i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
+                                                            Followers
+                                                        </span>
+                                                        <span class="pull-right badge badge-info">+11</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="dropdown-footer">
+                                    <a href="#">
+                                        See all notifications
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="green dropdown-modal">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
+                                <span class="badge badge-success">5</span>
+                            </a>
+                            <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                                <li class="dropdown-header">
+                                    <i class="ace-icon fa fa-envelope-o"></i>
+                                    5 Messages
+                                </li>
+                                <li class="dropdown-content ace-scroll" style="position: relative;">
+                                    <div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="max-height: 200px;">
+                                        <ul class="dropdown-menu dropdown-navbar">
+                                            <li>
+                                                <a class="clearfix" href="#">
+                                                    <img class="msg-photo" alt="Alex's Avatar" src="assets/images/avatars/avatar.png">
+                                                    <span class="msg-body">
+                                                        <span class="msg-title">
+                                                            <span class="blue">Alex:</span>
+                                                            Ciao sociis natoque penatibus et auctor ...
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>a moment ago</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="clearfix" href="#">
+                                                    <img class="msg-photo" alt="Susan's Avatar" src="assets/images/avatars/avatar3.png">
+                                                    <span class="msg-body">
+                                                        <span class="msg-title">
+                                                            <span class="blue">Susan:</span>
+                                                            Vestibulum id ligula porta felis euismod ...
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>20 minutes ago</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="clearfix" href="#">
+                                                    <img class="msg-photo" alt="Bob's Avatar" src="assets/images/avatars/avatar4.png">
+                                                    <span class="msg-body">
+                                                        <span class="msg-title">
+                                                            <span class="blue">Bob:</span>
+                                                            Nullam quis risus eget urna mollis ornare ...
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>3:15 pm</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="clearfix" href="#">
+                                                    <img class="msg-photo" alt="Kate's Avatar" src="assets/images/avatars/avatar2.png">
+                                                    <span class="msg-body">
+                                                        <span class="msg-title">
+                                                            <span class="blue">Kate:</span>
+                                                            Ciao sociis natoque eget urna mollis ornare ...
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>1:33 pm</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="clearfix" href="#">
+                                                    <img class="msg-photo" alt="Fred's Avatar" src="assets/images/avatars/avatar5.png">
+                                                    <span class="msg-body">
+                                                        <span class="msg-title">
+                                                            <span class="blue">Fred:</span>
+                                                            Vestibulum id penatibus et auctor  ...
+                                                        </span>
+                                                        <span class="msg-time">
+                                                            <i class="ace-icon fa fa-clock-o"></i>
+                                                            <span>10:09 am</span>
+                                                        </span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="dropdown-footer">
+                                    <a href="inbox.html">
+                                        See all messages
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="light-blue dropdown-modal">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                <img class="nav-user-photo" alt="Jason's Photo" src="assets/images/avatars/user.jpg">
+                                <span class="user-info">
+                                    <small>Welcome,</small>
+                                    Ringo
+                                </span>
+                                <i class="ace-icon fa fa-caret-down"></i>
+                            </a>
+                            <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                                <li>
+                                    <a href="#">
+                                        <i class="ace-icon fa fa-cog"></i>
+                                        Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="profile.html">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">
+                                        <i class="ace-icon fa fa-power-off"></i>
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>-->
+                    </div><!-- /.navbar-container -->
+                </div>
+                <!--Navbar Head END-->
+
+            <div class="container">
+
+                <!-- Modal BEGIN-->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Advance</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4 bgcolor-red"><span><small>Search</small></span></div>
+                                    <div class="col-md-4 col-md-offset-4"><input id="Text1" type="text" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span><small>Sort</small></span>
+                                        <input id="Checkbox1" type="checkbox" />Order No.
+                                        <input id="Checkbox1" type="checkbox" />Quantity
+                                        <input id="Checkbox1" type="checkbox" />Part No.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span><small>Filter</small></span>
+                                        <input id="Checkbox1" type="checkbox" />Order No.
+                                        <input id="Checkbox1" type="checkbox" />Quantity
+                                        <input id="Checkbox1" type="checkbox" />Part No.
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">.col-md-4</div>
+                                    <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+                                    <div class="col-md-2 col-md-offset-4">.col-md-2 .col-md-offset-4</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        Level 1: .col-sm-9
+                                        <div class="row">
+                                            <div class="col-xs-8 col-sm-6">
+                                                Level 2: .col-xs-8 .col-sm-6
+                                            </div>
+                                            <div class="col-xs-4 col-sm-6">
+                                                Level 2: .col-xs-4 .col-sm-6
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal END-->
+                <!--Kanban Main Body BEGIN-->
+                <div class="row" style="margin-top:30px">
+                    <div class="col-md-12">
+
+                        <!-- PAGE CONTENT BEGINS -->
+                        <div class="row">
+
+                            <!--First Column BEGIN-->
+                            <div class="col-md-3 pricing-box">
+                                <div class="widget-box widget-color-dark">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title bigger lighter">Purchasing Order</h5>
+                                    </div>
+                                    <div class="widget-body" style="height:700px; overflow-y:scroll;">
+                                        <div class="widget-main">
+                                            <div class="panel-group" ng-repeat="x in JSONDATA| filter:{Status:'Purchasing Order'}|filter:Search | orderBy:ordersort">
+                                                <div class="media search-media panel panel-default">
+                                                    <div class="">
+                                                        <table class="panel-heading bgcolor-{{x.BG_Color}}" ng-click="toggle(x)">
+                                                            <tr class="panel-title">
+                                                                <td width="10%" style="width:24px;height:24px" >
+                                                                   <span ng-show="x.Priority">
+                                                                       <img style="width:24px;height:24px;" src="IMG/ICU.PNG" />
+                                                                   </span>                                                                    
+                                                                    <!--<img style="width:24px;height:24px;" src="IMG/ICU1.png" />
+                                                                    <img style="width:24px;height:24px;" src="IMG/ICU2.png" />
+                                                                    <img style="width:24px;height:24px;" src="IMG/ICU3.png" />-->
+                                                                </td>
+                                                                <td width="80%" style="text-align:center">Order No.{{x.Order_No}}</td>
+                                                                <td width="10%"><span class="label label-lg label-grey arrowed">{{x.SAP_Code}}</span></td>
+                                                            </tr>
+                                                        </table>
+                                                        <table class="panel-body table table-bordered table-striped" ng-show="x.visible">
+                                                            <tr>
+                                                                <td width="30%">Quantity</td>
+                                                                <td width="70%">{{x.Quantity}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part No</td>
+                                                                <td>{{x.Part_No}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part Description</td>
+                                                                <td>{{x.Part_Description}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PO Create Date</td>
+                                                                <td>{{x.PO_Create_Data}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SCH Date</td>
+                                                                <td>{{x.SCH_Date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SN Date</td>
+                                                                <td>{{x.SN_Date}}</td>                                                               
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <span ng-show="x.visible" class="checkbox">
+                                                        <label>
+                                                            <input name="form-field-checkbox" class="ace" type="checkbox">
+                                                            <span class="lbl">Ready to ship</span>
+                                                        </label>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-block btn-inverse" ng-click="">
+                                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                            <span>Order Status</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--First Column END-->
+                            <!--Copy Columns BEGIN-->
+                            <div class="col-md-3 pricing-box">
+                                <div class="widget-box widget-color-orange">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title bigger lighter">Vendor Shipping</h5>
+                                    </div>
+                                    <div class="widget-body" style="height:700px; overflow-y:scroll;">
+                                        <div class="widget-main">
+                                            <div class="panel-group" ng-repeat="x in JSONDATA| filter:{Status:'Vendor Shipping'}|filter:Search | orderBy:ordersort">
+                                                <div class="media search-media panel panel-default">
+                                                    <div class="">
+                                                        <table class="panel-heading bgcolor-{{x.BG_Color}}" ng-click="toggle(x)">
+                                                            <tr class="panel-title">
+                                                                <td width="10%" style="width:24px">
+                                                                    <span ng-show="x.Priority">
+                                                                        <img style="width:24px;height:24px;" src="IMG/ICU.PNG" />
+                                                                    </span>
+                                                                </td>
+                                                                <td width="80%" style="text-align:center">Order No.{{x.Order_No}}</td>
+                                                                <td width="10%"></td>
+                                                            </tr>
+                                                        </table>
+                                                        <table class="panel-body table table-bordered table-striped" ng-show="x.visible">
+                                                            <tr>
+                                                                <td width="30%">Quantity</td>
+                                                                <td width="70%">{{x.Quantity}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part No</td>
+                                                                <td>{{x.Part_No}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part Description</td>
+                                                                <td>{{x.Part_Description}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PO Create Date</td>
+                                                                <td>{{x.PO_Create_Data}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SCH Date</td>
+                                                                <td>{{x.SCH_Date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SN Date</td>
+                                                                <td>{{x.SN_Date}}</td>
+                                                            </tr>                                                      
+                                                        </table>
+                                                    </div>
+                                                    <span ng-show="x.visible" class="checkbox">
+                                                        <label>
+                                                            <input name="form-field-checkbox" class="ace" type="checkbox" ng-click="Status_Change1(x)">
+                                                            <span class="lbl">Kitting Shipping Confirmation</span>
+                                                        </label>
+                                                        <label class="input-group">                                                            
+                                                            <span class="lbl">AWB No.</span>
+                                                            <input style="width:150px;height:30px" id="Text1" type="text" />
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-block btn-warning" ng-click="toggle()">
+                                            <span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
+                                            <span>Shipment Detail</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 pricing-box">
+                                <div class="widget-box widget-color-blue">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title bigger lighter">Goods Received</h5>
+                                    </div>
+                                    <div class="widget-body" style="height:700px; overflow-y:scroll;">
+                                        <div class="widget-main">
+                                            <div class="panel-group" ng-repeat="x in JSONDATA| filter:{Status:'Goods Received'}|filter:Search | orderBy:ordersort">
+                                                <div class="media search-media panel panel-default">
+                                                    <div class="">
+                                                        <table class="panel-heading bgcolor-{{x.BG_Color}}" ng-click="toggle(x)">
+                                                            <tr class="panel-title">
+                                                                <td width="10%" style="width:24px">
+                                                                    <span ng-show="x.Priority">
+                                                                        <img style="width:24px;height:24px;" src="IMG/ICU.PNG" />
+                                                                    </span>
+                                                                </td>
+                                                                <td width="70%" style="text-align:center">Order No.{{x.Order_No}}</td>
+                                                                <td width="20%"><span style="width:50px" class="label label-lg label-{{x.Label_Color}} arrowed">{{x.IQA_Code}}&nbsp;</span></td>
+                                                            </tr>
+                                                        </table>
+                                                        <table class="panel-body table table-bordered table-striped" ng-show="x.visible">
+                                                            <tr>
+                                                                <td width="30%">Quantity</td>
+                                                                <td width="70%">{{x.Quantity}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part No</td>
+                                                                <td>{{x.Part_No}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Part Description</td>
+                                                                <td>{{x.Part_Description}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PO Create Date</td>
+                                                                <td>{{x.PO_Create_Data}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SCH Date</td>
+                                                                <td>{{x.SCH_Date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SN Date</td>
+                                                                <td>{{x.SN_Date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>GR Date</td> 
+                                                                <td>{{x.Goods_Receice_Date_GR}}</td>                                                              
+                                                            </tr>
+                                                            <tr>
+                                                                <td>IQA Status</td>
+                                                                <td>{{x.IQA_result}}</td>
+                                                            </tr>
+                                                        </table>                                                                                        
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-block btn-primary" ng-click="toggle()">
+                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                            <span>IQA Detail</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 pricing-box">
+                                <div class="widget-box widget-color-green">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title bigger lighter">Goods Issued</h5>
+                                    </div>
+                                    <div class="widget-body" style="height:700px; overflow-y:scroll;">
+                                        <div class="widget-main">
+                                            <div class="panel-group" ng-repeat="x in JSONDATA| filter:{Status:'Goods Issued'}|filter:Search | orderBy:ordersort">
+                                                <div class="media search-media panel panel-default">
+                                                    <div class="">
+                                                        <table class="panel-heading bgcolor-{{x.BG_Color}}" ng-click="toggle(x)">
+                                                            <tr class="panel-title">
+                                                                <td width="10%" style="width:24px">
+                                                                    <!--<span ng-show="x.Priority" class="label label-lg label-pink arrowed-right"><span  class="fa fa-bolt" aria-hidden="true"></span></span>--> 
+                                                                    <span ng-show="x.Priority"><span><img style="width:24px;height:24px" src="IMG/fast.png" /></span></span>                                                               </td>
+                                                                <td width="80%" style="text-align:center">Part No.{{x.Part_No}}</td>
+                                                                <td width="10%"></td>
+                                                            </tr>
+                                                        </table>
+                                                        <table class="panel-body table table-bordered table-striped" ng-show="x.visible">
+                                                            <tr>
+                                                                <td width="30%">Plant</td>
+                                                                <td width="70%">{{x.Plant}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Store</td>
+                                                                <td>{{x.Store}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Quantity</td>
+                                                                <td>{{x.Inventory_QTY}}</td>
+                                                            </tr>                          
+                                                        </table>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-block btn-success" ng-click="toggle()">
+                                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                            <span>Inventory Status</span>
+                                            <!--<i class="ace-icon fa fa-chevron-up" ng-hide="visible"></i>
+                                    <i class="ace-icon fa fa-chevron-down" ng-show="visible"></i>-->
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Copy Columns END-->
+
+                        </div>
+                    </div>
+                </div>
+                <!--Kanban Main Body END-->
+                <!--Navbar Bottom BEGIN-->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav class="navbar navbar-default navbar-inverse navbar-fixed-bottom" role="navigation">
+                                <div class="navbar-header">
+                                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                                    </button> <a class="navbar-brand" href="#">Kanban</a>
+                                </div>
+
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sort<strong class="caret"></strong></a>
+                                            <ul class="dropdown-menu dropdown-light">
+                                                <li>
+                                                    <a href="#" ng-click="ordersort='Order_No'">Order No.</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" ng-click="ordersort='Priority'">ICU</a>
+                                                </li>
+
+                                                <li class="divider">
+                                                </li>
+                                                <li class="dropup dropdown-hover">
+                                                    <a tabindex="-1" class="clearfix" href="#">
+                                                        <span class="pull-left">More options</span>
+                                                        <i class="ace-icon fa fa-caret-right pull-right"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-light">
+                                                        <li>
+                                                            <a tabindex="-1" href="#" ng-click="ordersort='-Order_No'">Order No.</a>
+                                                        </li>
+                                                        <li>
+                                                            <a tabindex="-1" href="#" ng-click="ordersort='-Priority'">Priority</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+
+                                    <!--<form class="navbar-form navbar-left" role="search">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" ng-model="Search" placeholder="Order Tracing" />
+                                </div>
+                                <button class="btn btn-inverse btn-white" type="button">
+                                    <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                    Search
+                                </button>
+                            </form>-->
+
+                                    <form class="navbar-left form-group" style="margin-bottom:auto;margin-top:9px" role="search">
+                                        <div class="dropup">
+                                            <select ng-model="ordersort" id="food" class="multiselect" multiple="">
+                                                <option value="Order_No">Order No.</option>
+                                                <option value="Quantity">Quantity</option>
+                                                <option value="PO_Create_Data">PO_Create_Data</option>
+                                                <option value="SCH_Date">SCH_Date</option>
+                                                <option value="SN_Date">SN_Date</option>
+                                                <option value="Kitting_Info_ETD">Kitting_Info_ETD</option>
+                                                <option value="Priority">Priority</option>
+                                            </select>
+                                        </div>
+                                    </form>
+
+                                    <form class="navbar-form navbar-left">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-inverse btn-white" data-toggle="modal" data-target="#myModal">
+                                            Advance
+                                        </button>
+                                    </form>
+
+
+
+
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li>
+                                            <a href="#">Feedback</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!--Navbar Bottom END-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--AngularJS Script-->
+    <script>
+        var app = angular.module('Kanban', []);
+        app.controller('MyCtrl', function ($scope) {
+
+            //Dummy Data in JSON Format
+            $scope.JSONDATA = [
+{ "Status": "Purchasing Order", "ID": "1", "Order_No": "1000001", "Quantity": "3000", "Part_No": "00-00119", "Part_Description": "WAVEGARD BUTTON", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/1/2018", "SN_Date": "2/1/2018", "Priority": "ICU", "SAP_Code": "R", "BG_Color": "red", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "2", "Order_No": "1000002", "Quantity": "1250", "Part_No": "01-E44257", "Part_Description": "UNIT PRE-SENSOR PRB (THK:1MM, L:5-9MM)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/2/2018", "SN_Date": "2/2/2018", "Priority": "ICU", "BG_Color": "green", },
+{ "Status": "Goods Received", "ID": "3", "Order_No": "1000003", "Quantity": "1250", "Part_No": "01-E58208", "Part_Description": "SEPARATOR ASSY (S:9MM) BOWL", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/3/2018", "SN_Date": "2/3/2018", "Priority": "ICU", "IQA_Code": "IQA", "BG_Color": "red", "Label_Color": "yellow" },
+{ "Status": "Goods Issued", "ID": "4", "Order_No": "1000004", "Quantity": "2500", "Part_No": "02-E30389", "Part_Description": "(WT) Y ENCODER & CABLE ASSY", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/4/2018", "SN_Date": "2/4/2018", "Plant": "ALG", "Store": "L1", "Inventory_QTY": "30", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "5", "Order_No": "1000005", "Quantity": "2500", "Part_No": "02-E45725", "Part_Description": "WAFER GRIP X MTR ASSY", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/5/2018", "SN_Date": "2/5/2018", "Priority": "ICU", "SAP_Code": "M", "BG_Color": "red", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "6", "Order_No": "1000006", "Quantity": "9000", "Part_No": "03-21018", "Part_Description": "SIO CONNECTOR BOARD", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/6/2018", "SN_Date": "2/6/2018", "BG_Color": "green", },
+{ "Status": "Goods Received", "ID": "7", "Order_No": "1000007", "Quantity": "9000", "Part_No": "05-02924", "Part_Description": "VIBRATION DC TRACK FOR DFN4.0X6.8", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/7/2018", "SN_Date": "2/7/2018", "IQA_Code": "IQA", "BG_Color": "red", "Label_Color": "yellow" },
+{ "Status": "Goods Issued", "ID": "8", "Order_No": "1000008", "Quantity": "400", "Part_No": "00-60074", "Part_Description": "SOC HD CAP SCREW M3X10 W/ WASHER", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/8/2018", "SN_Date": "2/8/2018", "Plant": "ALG", "Store": "L1", "Inventory_QTY": "20", "Priority": "ICU", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "9", "Order_No": "1000009", "Quantity": "400", "Part_No": "00-60074", "Part_Description": "SOC HD SHOULDER SCREW M3X4 DIA4X6", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/9/2018", "SN_Date": "2/9/2018", "SAP_Code": "P", "BG_Color": "yellow", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "10", "Order_No": "1000010", "Quantity": "200", "Part_No": "00-60132", "Part_Description": "FLAT HD SOC SCREW M3 X 12         [09A1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/10/2018", "SN_Date": "2/10/2018", "Priority": "ICU", "BG_Color": "yellow", },
+{ "Status": "Goods Received", "ID": "11", "Order_No": "1000011", "Quantity": "6000", "Part_No": "00-60171", "Part_Description": "FLAT HD SOC SCREW M3 X 14", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/11/2018", "SN_Date": "2/27/2018", "Priority": "ICU", "IQA_Code": "IQA", "BG_Color": "yellow", "Label_Color": "yellow" },
+{ "Status": "Goods Issued", "ID": "12", "Order_No": "1000012", "Quantity": "9000", "Part_No": "00-60171", "Part_Description": "SOC HD CAP SCREW M4X12", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/12/2018", "SN_Date": "2/12/2018", "Plant": "ATH", "Store": "C5", "Inventory_QTY": "50", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "13", "Order_No": "1000013", "Quantity": "9000", "Part_No": "00-60171", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/13/2018", "SN_Date": "2/13/2018", "Priority": "ICU", "SAP_Code": "L", "BG_Color": "yellow", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "14", "Order_No": "1000014", "Quantity": "24000", "Part_No": "20-06627", "Part_Description": "WASHER SPRING M4", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/14/2018", "SN_Date": "2/14/2018", "BG_Color": "green", },
+{ "Status": "Goods Received", "ID": "15", "Order_No": "1000015", "Quantity": "6000", "Part_No": "23-00037", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/15/2018", "SN_Date": "2/27/2018", "Priority": "ICU", "IQA_Code": "IQA", "BG_Color": "yellow", "Label_Color": "yellow" },
+{ "Status": "Goods Issued", "ID": "16", "Order_No": "1000016", "Quantity": "1000", "Part_No": "23-00037", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/16/2018", "SN_Date": "2/16/2018", "Plant": "AMC", "Store": "H3", "Inventory_QTY": "33", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "17", "Order_No": "1000017", "Quantity": "1000", "Part_No": "23-00104", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/17/2018", "SN_Date": "2/17/2018", "SAP_Code": "?", "BG_Color": "yellow", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "18", "Order_No": "1000018", "Quantity": "2500", "Part_No": "23-00104", "Part_Description": "WASHER SPRING M5", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/18/2018", "SN_Date": "2/18/2018", "BG_Color": "red", },
+{ "Status": "Goods Received", "ID": "19", "Order_No": "1000019", "Quantity": "2500", "Part_No": "23-40043", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/19/2018", "SN_Date": "2/19/2018", "Goods_Receice_Date_GR": "2/19/2018", "IQA_result": "Pass", "IQA_Code": "Pass", "BG_Color": "green", "Label_Color": "success" },
+{ "Status": "Goods Issued", "ID": "20", "Order_No": "1000020", "Quantity": "2500", "Part_No": "81-00721", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/20/2018", "SN_Date": "2/20/2018", "Plant": "ATH", "Store": "C5", "Inventory_QTY": "44", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "21", "Order_No": "1000021", "Quantity": "1000", "Part_No": "20-86012-3", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/21/2018", "SN_Date": "2/21/2018", "SAP_Code": "A", "BG_Color": "green", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "22", "Order_No": "1000022", "Quantity": "600", "Part_No": "22-20106", "Part_Description": "WASHER SPRING M6", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/22/2018", "SN_Date": "2/22/2018", "BG_Color": "red", },
+{ "Status": "Goods Received", "ID": "23", "Order_No": "1000023", "Quantity": "3400", "Part_No": "26-16589", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/23/2018", "SN_Date": "2/23/2018", "Goods_Receice_Date_GR": "2/23/2018", "IQA_result": "Pass", "Priority": "ICU", "IQA_Code": "Pass", "BG_Color": "green", "Label_Color": "success" },
+{ "Status": "Goods Issued", "ID": "24", "Order_No": "1000024", "Quantity": "600", "Part_No": "26-16589", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/24/2018", "SN_Date": "2/24/2018", "Plant": "ATH", "Store": "H1", "Inventory_QTY": "55", "Priority": "ICU", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "25", "Order_No": "1000025", "Quantity": "600", "Part_No": "20-86012-4", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/25/2018", "SN_Date": "2/25/2018", "Priority": "ICU", "SAP_Code": "A", "BG_Color": "green", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "26", "Order_No": "1000026", "Quantity": "100", "Part_No": "22-20107", "Part_Description": "WASHER SPRING M7", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/26/2018", "SN_Date": "2/26/2018", "Priority": "ICU", "BG_Color": "yellow", },
+{ "Status": "Goods Received", "ID": "27", "Order_No": "1000027", "Quantity": "2000", "Part_No": "26-16589", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/27/2018", "SN_Date": "2/27/2018", "Goods_Receice_Date_GR": "2/27/2018", "IQA_result": "Pass", "IQA_Code": "Pass", "BG_Color": "green", "Label_Color": "success" },
+{ "Status": "Goods Issued", "ID": "28", "Order_No": "1000028", "Quantity": "3000", "Part_No": "26-16589", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/28/2018", "SN_Date": "2/28/2018", "Plant": "ATH", "Store": "C23", "Inventory_QTY": "66", "Priority": "ICU", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "29", "Order_No": "1000029", "Quantity": "6000", "Part_No": "20-86012-5", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/29/2018", "SN_Date": "3/1/2018", "SAP_Code": "R", "BG_Color": "red", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "30", "Order_No": "1000030", "Quantity": "2400", "Part_No": "22-20108", "Part_Description": "WASHER SPRING M8", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/30/2018", "SN_Date": "3/2/2018", "BG_Color": "green", },
+{ "Status": "Goods Received", "ID": "31", "Order_No": "1000031", "Quantity": "20", "Part_No": "26-16589", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "1/31/2018", "SN_Date": "2/27/2018", "Goods_Receice_Date_GR": "2/27/2018", "IQA_result": "Pass", "IQA_Code": "Pass", "BG_Color": "green", "Label_Color": "success" },
+{ "Status": "Goods Issued", "ID": "32", "Order_No": "1000032", "Quantity": "400", "Part_No": "26-16589", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "2/1/2018", "SN_Date": "3/4/2018", "Plant": "ALG", "Store": "C2", "Inventory_QTY": "120", "BG_Color": "white", },
+{ "Status": "Purchasing Order", "ID": "33", "Order_No": "1000033", "Quantity": "400", "Part_No": "20-86012-6", "Part_Description": "SPECIAL ATTACHING SCREW M3X12     [97B1]", "PO_Create_Data": "1/15/2018", "SCH_Date": "2/2/2018", "SN_Date": "3/5/2018", "SAP_Code": "?", "BG_Color": "yellow", "Label_Color": "grey" },
+{ "Status": "Vendor Shipping", "ID": "34", "Order_No": "1000034", "Quantity": "200", "Part_No": "22-20109", "Part_Description": "WASHER SPRING M9", "PO_Create_Data": "1/15/2018", "SCH_Date": "2/3/2018", "SN_Date": "3/6/2018", "BG_Color": "green", },
+{ "Status": "Goods Received", "ID": "35", "Order_No": "1000035", "Quantity": "2000", "Part_No": "26-16589", "Part_Description": "FRONT MIRROR (35-01082)", "PO_Create_Data": "1/15/2018", "SCH_Date": "2/4/2018", "SN_Date": "2/27/2018", "Goods_Receice_Date_GR": "2/27/2018", "IQA_result": "Failure", "IQA_Code": "Failure", "BG_Color": "green", "Label_Color": "pink" },
+{ "Status": "Goods Issued", "ID": "36", "Order_No": "1000036", "Quantity": "2000", "Part_No": "26-16589", "Part_Description": "ADDITIONAL MASS (50G)", "PO_Create_Data": "1/15/2018", "SCH_Date": "2/5/2018", "SN_Date": "3/8/2018", "Plant": "ALG", "Store": "C2", "Inventory_QTY": "3", "BG_Color": "white", },
+
+            ];
+
+            //Items show / hide button
+            $scope.toggle = function (x) {
+                x.visible = !x.visible;
+            }
+
+            $scope.Status_Change = function (x) {
+                x.Status = "Vendor Shipping";
+            }       
+
+
+        });
+    </script>
+
+
+
+    <!--Dropdown Button Script -about 30 rows-->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script src="assets/js/jquery-2.1.4.min.js"></script>
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+    <script src="assets/js/ace-elements.min.js"></script>
+    <script src="assets/js/ace.min.js"></script>
+    <script src="assets/js/bootstrap-multiselect.min.js"></script>
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#loading-btn').on(ace.click_event, function () {
+                var btn = $(this);
+                btn.button('loading')
+                setTimeout(function () {
+                    btn.button('reset')
+                }, 2000)
+            });
+
+
+            $('#id-button-borders').attr('checked', 'checked').on('click', function () {
+                $('#default-buttons .btn').toggleClass('no-border');
+            });
+
+
+            //////////////////Mutiselect model - BEGIN
+            $('.multiselect').multiselect({
+                enableFiltering: true,
+                enableHTML: true,
+                buttonClass: 'btn btn-white btn-primary',
+                templates: {
+                    button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-up"></b></button>',
+                    ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                    filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search  ng-model="Search"" type="text"></div></li>',
+                    filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                    li: '<li><a tabindex="0"><label></label></a></li>',
+                    divider: '<li class="multiselect-item divider"></li>',
+                    liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+                }
+            });
+
+            //in ajax mode, remove remaining elements before leaving page
+            $(document).one('ajaxloadstart.page', function (e) {
+                $('[class*=select2]').remove();
+                $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox('destroy');
+                $('.rating').raty('destroy');
+                $('.multiselect').multiselect('destroy');
+            });
+            //////////////////Mutiselect model - END
+            
+
+
+
+
+
+        })
+
+    </script>
+
+</body>
+</html>
